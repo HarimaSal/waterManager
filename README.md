@@ -25,6 +25,18 @@
 
 它打破了市面工具“单纯打卡”或“独立计时”的单点孤岛，以**科学水合节律**与**多维微健康习惯**为基础，深度融合**「心流番茄钟」**与**「无损实时合成自然白噪音」**，构建起**「专注工作 ➔ 舒缓小憩 ➔ 及时水合 ➔ 习惯养成」**的身心正向闭环。
 
+面向使用者视角的完整介绍见 [产品介绍.md](产品介绍.md)。
+
+---
+
+## ⬇️ 下载
+
+| 文件 | 说明 |
+| :--- | :--- |
+| [WaterManager.rar](https://gitee.com/harimasal/waterManager/releases/download/v1.0.0/WaterManager.rar) | Windows x64 绿色免安装版（v1.0.0，约 88MB），解压后双击 `VitalPulse 若水.exe` 运行 |
+
+更多版本与更新说明：[Gitee 发行版页面](https://gitee.com/harimasal/waterManager/releases)
+
 ---
 
 ## ✨ 核心特色与功能矩阵

@@ -1,5 +1,5 @@
 <template>
-  <main class="w-full h-full flex flex-col overflow-hidden bg-slate-50 dark:bg-zinc-950 text-slate-800 dark:text-slate-100 select-none relative font-sans antialiased">
+  <main class="w-full h-full flex flex-col overflow-hidden rounded-xl bg-slate-50 dark:bg-zinc-950 text-slate-800 dark:text-slate-100 select-none relative font-sans antialiased">
     <!-- 桌面柔和漫射环境背景光 -->
     <div class="pointer-events-none absolute -top-24 -left-24 w-72 h-72 rounded-full bg-sky-400/10 dark:bg-sky-500/10 filter blur-3xl"></div>
     <div class="pointer-events-none absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-cyan-400/10 dark:bg-cyan-500/10 filter blur-3xl"></div>
@@ -14,33 +14,39 @@
       <!-- 自定义 iOS 顶栏 -->
       <AppTitleBar />
 
-      <!-- 主视图滚动区域 (预留充分的底部悬浮 Tab 避让空间，防止内容被遮挡) -->
-      <div class="flex-1 overflow-y-auto px-4 py-3 pb-28 scrollbar-none z-10">
-        <!-- 标签页 1: 喝水打卡 -->
-        <section v-show="activeTab === 'water'" class="space-y-3 animate-in fade-in duration-150">
+      <!-- 主视图区域 (底部预留悬浮 Tab 避让空间) -->
+      <div class="flex-1 min-h-0 px-4 pt-3 pb-20 z-10 flex flex-col">
+        <!-- 标签页 1: 喝水打卡 (迷你陪伴条 + 球体两侧快捷补水 + 时段条，单屏不滚动) -->
+        <section
+          v-show="activeTab === 'water'"
+          class="flex-1 min-h-0 flex flex-col space-y-1 overflow-y-auto scrollbar-none animate-in fade-in duration-150"
+        >
           <WaterWave />
-          <BeverageSelector />
+          <HydrationTimeline />
         </section>
 
-        <!-- 标签页 2: 微健康习惯矩阵 -->
-        <section v-show="activeTab === 'habits'" class="animate-in fade-in duration-150">
-          <HabitsCardList />
-        </section>
+        <!-- 其余标签页：独立滚动容器 -->
+        <div v-show="activeTab !== 'water'" class="flex-1 min-h-0 overflow-y-auto scrollbar-none space-y-3">
+          <!-- 标签页 2: 微健康习惯矩阵 -->
+          <section v-show="activeTab === 'habits'" class="animate-in fade-in duration-150">
+            <HabitsCardList />
+          </section>
 
-        <!-- 标签页 3: 心流专注与工间律动 (新增) -->
-        <section v-show="activeTab === 'focus'" class="animate-in fade-in duration-150">
-          <FocusView />
-        </section>
+          <!-- 标签页 3: 心流专注与工间律动 (新增) -->
+          <section v-show="activeTab === 'focus'" class="animate-in fade-in duration-150">
+            <FocusView />
+          </section>
 
-        <!-- 标签页 4: 趋势分析与明细 -->
-        <section v-show="activeTab === 'stats'" class="animate-in fade-in duration-150">
-          <StatsView />
-        </section>
+          <!-- 标签页 4: 趋势分析与明细 -->
+          <section v-show="activeTab === 'stats'" class="animate-in fade-in duration-150">
+            <StatsView />
+          </section>
 
-        <!-- 标签页 4: 偏好设置 -->
-        <section v-show="activeTab === 'settings'" class="animate-in fade-in duration-150">
-          <SettingsView />
-        </section>
+          <!-- 标签页 5: 偏好设置 -->
+          <section v-show="activeTab === 'settings'" class="animate-in fade-in duration-150">
+            <SettingsView />
+          </section>
+        </div>
       </div>
 
       <!-- 底部悬浮 iOS 导航栏 -->
@@ -54,7 +60,7 @@ import { computed, onMounted, onUnmounted } from 'vue'
 import { useHealthStore } from '@/stores/health'
 import AppTitleBar from '@/components/AppTitleBar.vue'
 import WaterWave from '@/components/WaterWave.vue'
-import BeverageSelector from '@/components/BeverageSelector.vue'
+import HydrationTimeline from '@/components/HydrationTimeline.vue'
 import HabitsCardList from '@/components/HabitsCardList.vue'
 import FocusView from '@/components/FocusView.vue'
 import StatsView from '@/components/StatsView.vue'

@@ -18,8 +18,13 @@ let tray: Tray | null = null
 let isMiniMode = false
 let isQuiting = false
 
-const NORMAL_WIDTH = 460
-const NORMAL_HEIGHT = 760
+// 参考 iOS 逻辑分辨率：默认 390×844（iPhone 14/15），最小 375×667（SE），最大 430×932（Pro Max）
+const NORMAL_WIDTH = 390
+const NORMAL_HEIGHT = 844
+const MIN_WIDTH = 375
+const MIN_HEIGHT = 667
+const MAX_WIDTH = 430
+const MAX_HEIGHT = 932
 const MINI_WIDTH = 250
 const MINI_HEIGHT = 80
 
@@ -77,10 +82,10 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: NORMAL_WIDTH,
     height: NORMAL_HEIGHT,
-    minWidth: 400,
-    minHeight: 650,
-    maxWidth: 540,
-    maxHeight: 900,
+    minWidth: MIN_WIDTH,
+    minHeight: MIN_HEIGHT,
+    maxWidth: MAX_WIDTH,
+    maxHeight: MAX_HEIGHT,
     frame: false,
     transparent: true,
     hasShadow: true,
@@ -188,8 +193,8 @@ function toggleMiniMode(toMini: boolean) {
     mainWindow.webContents.send('mode-changed', 'mini')
   } else {
     // 恢复标准大窗口前，重新设定合理的卡片窗口边界
-    mainWindow.setMinimumSize(400, 650)
-    mainWindow.setMaximumSize(540, 900)
+    mainWindow.setMinimumSize(MIN_WIDTH, MIN_HEIGHT)
+    mainWindow.setMaximumSize(MAX_WIDTH, MAX_HEIGHT)
     mainWindow.setSize(NORMAL_WIDTH, NORMAL_HEIGHT)
     mainWindow.center()
     mainWindow.setAlwaysOnTop(false)

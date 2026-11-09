@@ -49,7 +49,7 @@
       <div class="relative">
         <button
           type="button"
-          class="no-drag h-7 px-2 rounded-lg text-[11px] font-semibold transition-all flex items-center space-x-1 cursor-pointer whitespace-nowrap shrink-0"
+          class="no-drag relative w-7 h-7 rounded-lg transition-all flex items-center justify-center cursor-pointer shrink-0"
           :class="[
             store.settings.soundscapeActive
               ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs'
@@ -59,14 +59,16 @@
           @click.stop="toggleSoundscapePopover"
         >
           <Waves class="w-3.5 h-3.5" :class="{ 'animate-pulse text-emerald-500': store.settings.soundscapeActive }" :stroke-width="2" />
-          <span class="text-[10px] whitespace-nowrap">白噪音</span>
-          <span v-if="store.settings.soundscapeActive" class="w-1.5 h-1.5 rounded-full bg-emerald-500 ml-0.5"></span>
+          <span
+            v-if="store.settings.soundscapeActive"
+            class="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-emerald-500"
+          ></span>
         </button>
 
         <!-- Apple 风格毛玻璃声景管理悬浮卡片 (Soundscape Popover) -->
         <div
           v-if="showSoundscapePopover"
-          class="absolute right-0 top-9 w-80 p-3 rounded-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-2xl shadow-2xl border border-black/[0.08] dark:border-white/[0.12] z-50 text-slate-800 dark:text-slate-100 select-none animate-in fade-in zoom-in-95 duration-150"
+          class="fixed left-2 right-2 top-12 w-auto p-3 rounded-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-2xl shadow-2xl border border-black/[0.08] dark:border-white/[0.12] z-50 text-slate-800 dark:text-slate-100 select-none animate-in fade-in zoom-in-95 duration-150"
           @click.stop
         >
           <!-- 弹窗顶栏：标题与主开关 (纯正矢量风格，彻底去除生硬 Emoji) -->
@@ -226,12 +228,11 @@
       <!-- 切换迷你桌面悬浮胶囊 -->
       <button
         type="button"
-        class="no-drag h-7 px-2 rounded-lg text-[11px] font-semibold bg-ios-blue/10 hover:bg-ios-blue/20 dark:bg-ios-blue-dark/20 text-ios-blue dark:text-ios-blue-dark active:scale-95 transition-all flex items-center space-x-1 cursor-pointer"
+        class="no-drag w-7 h-7 rounded-lg bg-ios-blue/10 hover:bg-ios-blue/20 dark:bg-ios-blue-dark/20 text-ios-blue dark:text-ios-blue-dark active:scale-95 transition-all flex items-center justify-center cursor-pointer shrink-0"
         title="收起为桌面悬浮小组件"
         @click.stop="handleToggleMini"
       >
         <Minimize2 class="w-3 h-3" :stroke-width="2.2" />
-        <span>悬浮</span>
       </button>
 
       <!-- 最小化窗口 -->

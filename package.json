@@ -53,5 +53,10 @@
         "dir"
       ]
     }
+  },
+  "allowScripts": {
+    "electron": true,
+    "esbuild": true,
+    "vue-demi": true
   }
 }

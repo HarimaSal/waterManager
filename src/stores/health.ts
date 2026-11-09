@@ -452,6 +452,7 @@ export const useHealthStore = defineStore('health', {
       }
 
       this.saveToStorage()
+      return record.id
     },
 
     removeWaterRecord(id: string) {

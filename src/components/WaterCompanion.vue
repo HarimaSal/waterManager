@@ -1,12 +1,12 @@
 <template>
-  <div class="w-full flex flex-col items-center select-none py-1 relative">
+  <div class="w-full h-full flex flex-col items-center select-none py-1 relative">
     <!-- 1. 灵动微景观生态箱主体卡片 (Living Diorama Habitats Card - 参考图 2 艺术意境) -->
     <div
-      class="w-full max-w-sm rounded-3xl overflow-hidden relative border border-black/[0.08] dark:border-white/[0.12] shadow-ios-card transition-all duration-500 cursor-pointer group"
+      class="w-full max-w-sm flex-1 min-h-0 flex flex-col rounded-3xl overflow-hidden relative border border-black/[0.08] dark:border-white/[0.12] shadow-ios-card transition-all duration-500 cursor-pointer group"
       @click="handlePetCompanion"
     >
       <!-- 卡片顶栏操作区：场景切换与互动提示 -->
-      <div class="relative z-20 flex items-center justify-between px-3.5 pt-3 pb-1">
+      <div class="relative z-30 flex items-center justify-between px-3 pt-1.5 pb-1">
         <!-- 所在场景切换微胶囊 (纯矢量图标) -->
         <button
           type="button"
@@ -18,6 +18,45 @@
           <span>{{ currentSceneMeta.title }}</span>
           <ChevronDown class="w-3 h-3 opacity-75" :stroke-width="2.5" />
         </button>
+
+        <!-- 等级与经验进度胶囊：放在顶栏中间，不再遮挡小水滴本体 -->
+        <div class="relative group/lv shrink-0">
+          <div class="flex items-center space-x-1 px-2 py-1 rounded-full bg-black/20 dark:bg-white/10 backdrop-blur-md border border-white/20 shadow-xs">
+            <span class="text-[9px] font-black text-white tracking-wide whitespace-nowrap">
+              Lv.{{ companionLevel }}
+            </span>
+            <div class="w-8 h-1 rounded-full bg-white/30 overflow-hidden">
+              <div
+                class="h-full bg-gradient-to-r from-cyan-300 to-emerald-400 rounded-full transition-all duration-500"
+                :class="expProgressWidthClass"
+              ></div>
+            </div>
+          </div>
+
+          <!-- 自绘悬浮提示（替代系统原生 tooltip） -->
+          <div
+            class="pointer-events-none absolute left-1/2 top-full z-30 w-44 -translate-x-1/2 translate-y-1 scale-95 opacity-0 origin-top transition-all duration-150 group-hover/lv:translate-y-0 group-hover/lv:scale-100 group-hover/lv:opacity-100"
+          >
+            <div class="mt-2 rounded-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-2xl px-3 py-2">
+              <div class="flex items-center space-x-1.5">
+                <Sparkles class="w-3 h-3 text-amber-500 shrink-0" :stroke-width="2.4" />
+                <span class="text-[11px] font-black text-slate-800 dark:text-slate-100 whitespace-nowrap">
+                  {{ companionLevelTitle }}
+                </span>
+              </div>
+              <div class="mt-1.5 h-1.5 rounded-full bg-slate-200 dark:bg-zinc-700 overflow-hidden">
+                <div
+                  class="h-full bg-gradient-to-r from-ios-blue to-cyan-400 rounded-full transition-all duration-500"
+                  :class="expProgressWidthClass"
+                ></div>
+              </div>
+              <div class="mt-1 flex items-center justify-between text-[9px] font-mono text-slate-500 dark:text-slate-400">
+                <span>{{ currentWaterExp }} / {{ maxWaterGoal }} ml</span>
+                <span class="font-bold text-ios-blue dark:text-ios-blue-dark">{{ store.progressPercent }}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- 互动小提示与形态切换微胶囊 (支持首页直接切换小水滴外貌皮肤，纯矢量图标) -->
         <div class="flex items-center space-x-1.5 text-white/80">
@@ -37,7 +76,7 @@
 
       <!-- 2. 灵动对话气泡 (Speech Bubble - 支持自适应完整展开与收起) -->
       <div
-        class="relative z-20 mx-auto mt-1 mb-2 transition-all duration-300 ease-out bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl rounded-2xl shadow-md border border-white/40 dark:border-white/10 cursor-pointer select-text"
+        class="relative z-20 mx-auto mt-1 mb-1 transition-all duration-300 ease-out bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl rounded-2xl shadow-md border border-white/40 dark:border-white/10 cursor-pointer select-text"
         :class="[
           isSpeechExpanded
             ? 'w-[92%] max-w-[320px] p-2.5 ring-1 ring-ios-blue/20'
@@ -86,9 +125,13 @@
       </div>
 
       <!-- 3. 多层深度艺术微景观背景 (Multi-Layer Depth Scenery - 参考图 2 意境) -->
-      <div class="relative w-full h-44 overflow-hidden flex items-end justify-center">
+      <!-- 场景固定 176px 贴底绘制，多出的高度由同色天空背景补齐，避免画面变形 -->
+      <div
+        class="relative w-full flex-1 min-h-[176px] max-h-[240px] overflow-hidden flex items-end justify-center"
+        :class="sceneSkyClass"
+      >
         <!-- (1) 场景一：极地冰原 · 纯澈新月 (Polar Moonlit Ridge - 100% 对齐图 2 星夜雪山与暗色冷杉) -->
-        <div v-if="currentScene === 'polar_glacier'" class="absolute inset-0">
+        <div v-if="currentScene === 'polar_glacier'" class="absolute inset-x-0 bottom-0 h-44">
           <svg class="w-full h-full" viewBox="0 0 360 176" preserveAspectRatio="none">
             <defs>
               <linearGradient id="polarSkyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -110,8 +153,7 @@
               </linearGradient>
             </defs>
 
-            <!-- 远景：深邃星夜夜空 -->
-            <rect width="360" height="176" fill="url(#polarSkyGrad)" />
+            <!-- 天空由外层容器渐变绘制，此处不再铺底 -->
 
             <!-- 图 2 同款：银白色皎洁细新月 (Crescent Moon) 与柔和月晕 -->
             <circle cx="270" cy="30" r="14" fill="#E0F2FE" opacity="0.15" />
@@ -167,7 +209,7 @@
         </div>
 
         <!-- (2) 场景二：晨曦书桌 · 极简工位 (Zen Morning Study) -->
-        <div v-else-if="currentScene === 'zen_study'" class="absolute inset-0">
+        <div v-else-if="currentScene === 'zen_study'" class="absolute inset-x-0 bottom-0 h-44">
           <svg class="w-full h-full" viewBox="0 0 360 176" preserveAspectRatio="none">
             <defs>
               <linearGradient id="studySkyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -182,8 +224,7 @@
               </linearGradient>
             </defs>
 
-            <!-- 远景：破晓暖阳金色晨曦 -->
-            <rect width="360" height="176" fill="url(#studySkyGrad)" />
+            <!-- 天空由外层容器渐变绘制 -->
 
             <!-- 窗外柔和破晓朝阳 -->
             <circle cx="180" cy="40" r="32" fill="#F59E0B" opacity="0.25" />
@@ -216,7 +257,7 @@
         </div>
 
         <!-- (3) 场景三：禅意茶庭 · 烟雨竹舍 (Bamboo Mist Sanctuary) -->
-        <div v-else-if="currentScene === 'matcha_garden'" class="absolute inset-0">
+        <div v-else-if="currentScene === 'matcha_garden'" class="absolute inset-x-0 bottom-0 h-44">
           <svg class="w-full h-full" viewBox="0 0 360 176" preserveAspectRatio="none">
             <defs>
               <linearGradient id="teaSkyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -231,8 +272,7 @@
               </linearGradient>
             </defs>
 
-            <!-- 远景：烟雨空蒙青碧天幕 -->
-            <rect width="360" height="176" fill="url(#teaSkyGrad)" />
+            <!-- 天空由外层容器渐变绘制 -->
 
             <!-- 空灵水月与云烟 -->
             <circle cx="90" cy="35" r="16" fill="#CCFBF1" opacity="0.25" />
@@ -266,7 +306,7 @@
         </div>
 
         <!-- (4) 场景四：赛博星舱 · 氧能矩阵 (Cyber Nebula Matrix) -->
-        <div v-else-if="currentScene === 'cyber_nebula'" class="absolute inset-0">
+        <div v-else-if="currentScene === 'cyber_nebula'" class="absolute inset-x-0 bottom-0 h-44">
           <svg class="w-full h-full" viewBox="0 0 360 176" preserveAspectRatio="none">
             <defs>
               <linearGradient id="cyberSkyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -281,8 +321,7 @@
               </linearGradient>
             </defs>
 
-            <!-- 远景：深空暗夜星云 -->
-            <rect width="360" height="176" fill="url(#cyberSkyGrad)" />
+            <!-- 天空由外层容器渐变绘制 -->
 
             <!-- 霓虹星云粉紫光晕 -->
             <circle cx="260" cy="45" r="45" fill="#C084FC" opacity="0.18" />
@@ -616,24 +655,8 @@
             </g>
           </svg>
         </div>
-      </div>
-    </div>
 
-    <!-- 4. 等级、头衔与成长经验条 (经验值实时跟随补水流水，满级为当日设定总目标) -->
-    <div class="mt-2.5 flex items-center space-x-2 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl px-3 py-1 rounded-full border border-black/[0.06] dark:border-white/[0.08] shadow-xs">
-      <span class="text-[10px] font-black text-ios-blue dark:text-ios-blue-dark tracking-wide">
-        {{ companionLevelTitle }}
-      </span>
-      <!-- 经验条 (以当日目标水量为满级 100%) -->
-      <div class="w-20 h-1.5 rounded-full bg-slate-200 dark:bg-zinc-700 overflow-hidden">
-        <div
-          class="h-full bg-gradient-to-r from-ios-blue to-cyan-400 rounded-full transition-all duration-500"
-          :class="expProgressWidthClass"
-        ></div>
       </div>
-      <span class="text-[9px] font-mono font-bold text-slate-400">
-        {{ currentWaterExp }}/{{ maxWaterGoal }} ml
-      </span>
     </div>
 
     <!-- 5. 场景切换交互弹窗 (Pet Habitat Switcher Modal) -->
@@ -880,6 +903,17 @@ const sceneOptions: {
 
 const currentSceneMeta = computed(() => {
   return sceneOptions.find((s) => s.value === currentScene.value) || sceneOptions[0]
+})
+
+// 天空由容器渐变绘制（随卡片高度平滑延伸），场景物体固定 176px 贴底绘制，画面不变形
+const sceneSkyClass = computed(() => {
+  switch (currentScene.value) {
+    case 'polar_glacier': return 'scene-sky-polar'
+    case 'zen_study': return 'scene-sky-study'
+    case 'matcha_garden': return 'scene-sky-tea'
+    case 'cyber_nebula': return 'scene-sky-cyber'
+    default: return 'scene-sky-default'
+  }
 })
 
 function selectScene(scene: CompanionScene): void {

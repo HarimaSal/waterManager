@@ -1,49 +1,61 @@
 <template>
-  <div class="relative flex flex-col items-center justify-center py-1 select-none">
-    <!-- 植物保姆 / Tamagotchi 灵感：高颜值水滴精灵「小若水」成长萌宠伴侣 -->
-    <WaterCompanion v-if="store.settings.enableCompanion !== false" class="mb-1" />
+  <div class="relative flex-1 min-h-0 w-full flex flex-col items-center py-1 select-none">
+    <!-- 植物保姆 / Tamagotchi 灵感：水滴精灵微景观常驻首页 -->
+    <WaterCompanion
+      v-if="store.settings.enableCompanion !== false"
+      class="w-full flex-[1000_1_0%] min-h-[254px] max-h-[318px]"
+    />
 
-    <!-- 外层发光光晕与容器 -->
-    <div class="relative w-52 h-52 flex items-center justify-center">
-      <!-- 柔和呼吸背光 -->
-      <div
-        class="absolute inset-2 rounded-full filter blur-xl opacity-40 transition-colors duration-700"
-        :class="progressGlowClass"
-      ></div>
+    <!-- 弹性间距：让各图块在页面内均匀分布，避免上下大片留白 -->
+    <div class="flex-1 min-h-[12px]"></div>
 
-      <!-- 仿生拟态水球画布 -->
-      <canvas
-        ref="canvasRef"
-        width="208"
-        height="208"
-        class="relative rounded-full shadow-ios-float ring-4 ring-white/70 dark:ring-white/10"
-      ></canvas>
+    <!-- 核心区：左侧快捷容量 / 水球 / 右侧饮品切换（水球按可用高度自适应，宽度受两侧按钮约束） -->
+    <div class="flex-[1000_1_0%] min-h-[150px] max-h-[calc(100vw-190px)] w-full flex items-center justify-center">
+      <SphereSideActions>
+        <div class="relative h-full aspect-square shrink-0 flex items-center justify-center">
+          <!-- 柔和呼吸背光 -->
+          <div
+            class="absolute inset-2 rounded-full filter blur-xl opacity-40 transition-colors duration-700"
+            :class="progressGlowClass"
+          ></div>
 
-      <!-- 中心数值覆盖层 -->
-      <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <span class="text-4xl font-black tracking-tight drop-shadow-sm text-slate-800 dark:text-white">
-          {{ progressPercent }}<span class="text-xl font-semibold ml-0.5">%</span>
-        </span>
-        <span class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-1 drop-shadow-sm">
-          {{ totalWater }} / {{ goalWater }} ml
-        </span>
-      </div>
+          <!-- 仿生拟态水球画布 (按 devicePixelRatio 取真实像素，避免放大发虚) -->
+          <canvas
+            ref="canvasRef"
+            width="156"
+            height="156"
+            class="relative w-full h-full rounded-full shadow-ios-float ring-4 ring-white/70 dark:ring-white/10"
+          ></canvas>
+
+          <!-- 中心数值覆盖层 -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <span class="text-4xl font-black tracking-tight drop-shadow-sm text-slate-800 dark:text-white">
+              {{ progressPercent }}<span class="text-xl font-semibold ml-0.5">%</span>
+            </span>
+            <span class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-1 drop-shadow-sm">
+              {{ totalWater }} / {{ goalWater }} ml
+            </span>
+          </div>
+        </div>
+      </SphereSideActions>
     </div>
 
+    <div class="flex-1 min-h-[12px]"></div>
+
     <!-- 底部状态轻提示 -->
-    <div class="mt-2 text-center">
-      <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center justify-center space-x-1.5">
-        <Droplets class="w-3.5 h-3.5 text-ios-blue dark:text-ios-blue-dark" :stroke-width="2.2" />
-        <span>{{ statusBadgeText }}</span>
+    <div class="shrink-0 text-center w-full">
+      <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 flex items-center justify-center space-x-1.5">
+        <Droplets class="w-3 h-3 shrink-0 text-ios-blue dark:text-ios-blue-dark" :stroke-width="2.2" />
+        <span class="truncate">{{ statusBadgeText }}</span>
       </p>
     </div>
 
     <!-- 健身模式：今日训练负荷一键切换与补剂补偿状态 -->
     <div
       v-if="store.settings.appMode === 'fitness'"
-      class="mt-2 w-full max-w-sm px-2 flex flex-col items-center animate-in fade-in duration-200"
+      class="mt-0.5 shrink-0 w-full max-w-sm px-2 flex flex-col items-center animate-in fade-in duration-200"
     >
-      <div class="flex items-center space-x-1 p-1 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/20 text-[10px]">
+      <div class="flex items-center space-x-0.5 p-0.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/20 text-[10px]">
         <span class="font-bold text-amber-600 dark:text-amber-400 px-1 flex items-center space-x-0.5">
           <Flame class="w-3 h-3" :stroke-width="2.5" />
           <span>训练计划:</span>
@@ -77,6 +89,8 @@
         </span>
       </div>
     </div>
+
+    <div class="flex-1 min-h-[12px]"></div>
   </div>
 </template>
 
@@ -85,6 +99,7 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { Droplets, Flame } from 'lucide-vue-next'
 import { useHealthStore } from '@/stores/health'
 import WaterCompanion from '@/components/WaterCompanion.vue'
+import SphereSideActions from '@/components/SphereSideActions.vue'
 import type { TrainingIntensity } from '@/types'
 
 const store = useHealthStore()
@@ -125,8 +140,12 @@ function drawWave(): void {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
 
-  const width = canvas.width
-  const height = canvas.height
+  // 统一在 208 逻辑坐标系绘制，按设备像素比缩放，避免画布放大后发虚
+  const scale = canvas.width / 208
+  ctx.setTransform(scale, 0, 0, scale, 0, 0)
+
+  const width = 208
+  const height = 208
   const radius = width / 2
 
   ctx.clearRect(0, 0, width, height)
@@ -197,14 +216,33 @@ function drawWave(): void {
   animationFrameId = requestAnimationFrame(drawWave)
 }
 
+function syncCanvasSize(): void {
+  const canvas = canvasRef.value
+  if (!canvas) return
+  const dpr = window.devicePixelRatio || 1
+  const cssSize = canvas.clientWidth || 208
+  canvas.width = Math.round(cssSize * dpr)
+  canvas.height = Math.round(cssSize * dpr)
+}
+
+let resizeObserver: ResizeObserver | null = null
+
 onMounted(() => {
+  syncCanvasSize()
   drawWave()
+  // 水球尺寸随窗口自适应，尺寸变化后同步画布像素缓冲，避免发虚
+  if (canvasRef.value) {
+    resizeObserver = new ResizeObserver(() => syncCanvasSize())
+    resizeObserver.observe(canvasRef.value)
+  }
 })
 
 onUnmounted(() => {
   if (animationFrameId !== null) {
     cancelAnimationFrame(animationFrameId)
   }
+  resizeObserver?.disconnect()
+  resizeObserver = null
 })
 
 watch(

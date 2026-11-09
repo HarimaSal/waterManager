@@ -315,14 +315,25 @@
         <!-- 统一品牌天蓝色调开关 -->
         <button
           type="button"
-          class="w-10 h-5.5 rounded-full transition-colors relative cursor-pointer p-0.5"
-          :class="store.settings.autoSoundscapeSync ? 'bg-sky-500 dark:bg-sky-600' : 'bg-slate-200 dark:bg-zinc-700'"
+          role="switch"
+          :aria-checked="!!store.settings.autoSoundscapeSync"
+          class="relative shrink-0 w-11 h-6 cursor-pointer active:scale-95 transition-transform"
           @click="toggleAutoSoundscape"
         >
-          <div
-            class="w-4.5 h-4.5 rounded-full bg-white shadow-sm transition-transform duration-200"
-            :class="store.settings.autoSoundscapeSync ? 'translate-x-4.5' : 'translate-x-0'"
-          ></div>
+          <!-- 光条轨道：开启时渐变发光 -->
+          <span
+            class="absolute left-0 right-0 top-1/2 h-[7px] -translate-y-1/2 rounded-full transition-all duration-300"
+            :class="store.settings.autoSoundscapeSync
+              ? 'bg-gradient-to-r from-sky-400 via-cyan-400 to-sky-500 shadow-[0_0_10px_2px_rgba(56,189,248,0.45)]'
+              : 'bg-slate-200 dark:bg-zinc-700 shadow-inner'"
+          ></span>
+          <!-- 发光滑块 -->
+          <span
+            class="absolute top-1/2 left-0 w-[18px] h-[18px] -translate-y-1/2 rounded-full transition-all duration-300 ease-out"
+            :class="store.settings.autoSoundscapeSync
+              ? 'translate-x-[26px] bg-white ring-2 ring-white/80 shadow-[0_1px_4px_rgba(15,23,42,0.25),0_0_10px_rgba(56,189,248,0.85)]'
+              : 'translate-x-0 bg-white ring-2 ring-slate-100 dark:ring-zinc-600 shadow-[0_1px_4px_rgba(15,23,42,0.25)]'"
+          ></span>
         </button>
       </div>
 
@@ -345,14 +356,25 @@
         <!-- 统一品牌天蓝色调开关 -->
         <button
           type="button"
-          class="w-10 h-5.5 rounded-full transition-colors relative cursor-pointer p-0.5"
-          :class="store.settings.promptHydrationOnPomodoroComplete !== false ? 'bg-sky-500 dark:bg-sky-600' : 'bg-slate-200 dark:bg-zinc-700'"
+          role="switch"
+          :aria-checked="store.settings.promptHydrationOnPomodoroComplete !== false"
+          class="relative shrink-0 w-11 h-6 cursor-pointer active:scale-95 transition-transform"
           @click="togglePromptHydration"
         >
-          <div
-            class="w-4.5 h-4.5 rounded-full bg-white shadow-sm transition-transform duration-200"
-            :class="store.settings.promptHydrationOnPomodoroComplete !== false ? 'translate-x-4.5' : 'translate-x-0'"
-          ></div>
+          <!-- 光条轨道：开启时渐变发光 -->
+          <span
+            class="absolute left-0 right-0 top-1/2 h-[7px] -translate-y-1/2 rounded-full transition-all duration-300"
+            :class="store.settings.promptHydrationOnPomodoroComplete !== false
+              ? 'bg-gradient-to-r from-sky-400 via-cyan-400 to-sky-500 shadow-[0_0_10px_2px_rgba(56,189,248,0.45)]'
+              : 'bg-slate-200 dark:bg-zinc-700 shadow-inner'"
+          ></span>
+          <!-- 发光滑块 -->
+          <span
+            class="absolute top-1/2 left-0 w-[18px] h-[18px] -translate-y-1/2 rounded-full transition-all duration-300 ease-out"
+            :class="store.settings.promptHydrationOnPomodoroComplete !== false
+              ? 'translate-x-[26px] bg-white ring-2 ring-white/80 shadow-[0_1px_4px_rgba(15,23,42,0.25),0_0_10px_rgba(56,189,248,0.85)]'
+              : 'translate-x-0 bg-white ring-2 ring-slate-100 dark:ring-zinc-600 shadow-[0_1px_4px_rgba(15,23,42,0.25)]'"
+          ></span>
         </button>
       </div>
     </div>

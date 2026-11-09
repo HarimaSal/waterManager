@@ -1,6 +1,6 @@
 {
   "name": "vitalpulse-health",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "private": true,
   "description": "iOS Style Health & Water Tracker Desktop App",
@@ -44,8 +44,11 @@
     },
     "files": [
       "dist/**/*",
-      "dist-electron/**/*"
+      "dist-electron/**/*",
+      "!node_modules/**/*"
     ],
+    "compression": "maximum",
+    "asar": true,
     "win": {
       "icon": "public/app-icon.ico",
       "signAndEditExecutable": false,

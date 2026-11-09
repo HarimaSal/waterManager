@@ -75,6 +75,22 @@ body {
   animation: hydrate-toast-countdown 3s linear forwards;
 }
 
+/* 时段条悬浮提示入场 */
+@keyframes slot-tip-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.slot-tip {
+  animation: slot-tip-in 140ms ease-out both;
+}
+
 /* 核心窗口拖拽与禁止拖拽区域，确保按钮点击 100% 穿透生效 */
 .app-drag-region {
   -webkit-app-region: drag !important;

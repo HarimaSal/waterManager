@@ -6,22 +6,35 @@
         v-for="vol in presetVolumes"
         :key="vol"
         type="button"
-        class="w-10 flex-1 min-h-[28px] max-h-[54px] rounded-lg border flex flex-col items-center justify-center transition-all duration-150 active:scale-95 cursor-pointer bg-white/85 dark:bg-zinc-900/85 backdrop-blur-xl border-slate-200/70 dark:border-zinc-700/70 text-slate-700 dark:text-slate-200 shadow-xs"
-        :title="`记录 ${vol}ml ${selectedBeverage.name.split(' ')[0]}`"
+        class="group/rail relative hover:z-40 w-10 flex-1 min-h-[28px] max-h-[54px] rounded-lg border flex flex-col items-center justify-center transition-all duration-150 active:scale-95 cursor-pointer bg-white/85 dark:bg-zinc-900/85 backdrop-blur-xl border-slate-200/70 dark:border-zinc-700/70 text-slate-700 dark:text-slate-200 shadow-xs"
         @click="commit(vol)"
       >
         <span class="text-[10px] font-black leading-none">+{{ vol }}</span>
         <span class="text-[7px] leading-none mt-0.5 opacity-60">ml</span>
+
+        <!-- 悬浮提示：补水容量 -->
+        <span class="pointer-events-none absolute left-full top-1/2 z-40 ml-2 -translate-y-1/2 rounded-xl border border-black/[0.06] dark:border-white/10 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl px-2.5 py-1.5 shadow-[0_10px_28px_-8px_rgba(15,23,42,0.3)] opacity-0 transition-opacity duration-150 group-hover/rail:opacity-100">
+          <span class="block text-[10px] font-black text-slate-800 dark:text-slate-100 whitespace-nowrap">+{{ vol }} ml 补水</span>
+          <span class="block text-[9px] font-bold text-ios-blue dark:text-ios-blue-dark whitespace-nowrap">
+            {{ selectedBeverage.name.split(' ')[0] }} · 净补水
+            {{ calculateEffectiveWater(vol, selectedBeverage.hydrationFactor) }} ml
+          </span>
+        </span>
       </button>
 
       <button
         type="button"
-        class="w-10 flex-1 min-h-[28px] max-h-[54px] rounded-lg border border-dashed border-slate-300 dark:border-zinc-600 flex flex-col items-center justify-center transition-all duration-150 active:scale-95 cursor-pointer bg-white/60 dark:bg-zinc-900/60 text-slate-500 dark:text-slate-400"
-        title="自定义毫升数与补记时间"
+        class="group/rail relative hover:z-40 w-10 flex-1 min-h-[28px] max-h-[54px] rounded-lg border border-dashed border-slate-300 dark:border-zinc-600 flex flex-col items-center justify-center transition-all duration-150 active:scale-95 cursor-pointer bg-white/60 dark:bg-zinc-900/60 text-slate-500 dark:text-slate-400"
         @click="openCustom(presetVolumes[1] || presetVolumes[0] || 250)"
       >
         <Sliders class="w-3 h-3" :stroke-width="2.2" />
         <span class="text-[7px] leading-none mt-0.5">自定义</span>
+
+        <!-- 悬浮提示：自定义 -->
+        <span class="pointer-events-none absolute left-full top-1/2 z-40 ml-2 -translate-y-1/2 rounded-xl border border-black/[0.06] dark:border-white/10 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl px-2.5 py-1.5 shadow-[0_10px_28px_-8px_rgba(15,23,42,0.3)] opacity-0 transition-opacity duration-150 group-hover/rail:opacity-100">
+          <span class="block text-[10px] font-black text-slate-800 dark:text-slate-100 whitespace-nowrap">自定义毫升</span>
+          <span class="block text-[9px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">支持补记饮用时间点</span>
+        </span>
       </button>
     </div>
 
@@ -34,27 +47,39 @@
         v-for="item in railBeverages"
         :key="item.id"
         type="button"
-        class="w-10 flex-1 min-h-[28px] max-h-[54px] rounded-lg border flex flex-col items-center justify-center transition-all duration-150 active:scale-95 cursor-pointer"
+        class="group/rail relative hover:z-40 w-10 flex-1 min-h-[28px] max-h-[54px] rounded-lg border flex flex-col items-center justify-center transition-all duration-150 active:scale-95 cursor-pointer"
         :class="[
           selectedBeverageId === item.id
             ? 'bg-ios-blue text-white border-ios-blue shadow-sm'
             : 'bg-white/85 dark:bg-zinc-900/85 backdrop-blur-xl border-slate-200/70 dark:border-zinc-700/70 text-slate-600 dark:text-slate-300'
         ]"
-        :title="`${item.name} · 有效补水 ${Math.round(item.hydrationFactor * 100)}%`"
         @click="selectedBeverageId = item.id"
       >
         <component :is="getBeverageIcon(item.id)" class="w-3 h-3" :stroke-width="2" />
         <span class="text-[7px] leading-none mt-0.5">{{ item.name.split(' ')[0] }}</span>
+
+        <!-- 悬浮提示：饮品分类 -->
+        <span class="pointer-events-none absolute right-full top-1/2 z-40 mr-2 -translate-y-1/2 rounded-xl border border-black/[0.06] dark:border-white/10 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl px-2.5 py-1.5 shadow-[0_10px_28px_-8px_rgba(15,23,42,0.3)] opacity-0 transition-opacity duration-150 group-hover/rail:opacity-100">
+          <span class="block text-[10px] font-black text-slate-800 dark:text-slate-100 whitespace-nowrap">{{ item.name }}</span>
+          <span class="block text-[9px] font-bold text-ios-blue dark:text-ios-blue-dark whitespace-nowrap">
+            有效补水 {{ Math.round(item.hydrationFactor * 100) }}%
+          </span>
+        </span>
       </button>
 
       <button
         type="button"
-        class="w-10 flex-1 min-h-[28px] max-h-[54px] rounded-lg border border-dashed border-slate-300 dark:border-zinc-600 flex flex-col items-center justify-center transition-all duration-150 active:scale-95 cursor-pointer bg-white/60 dark:bg-zinc-900/60 text-slate-500 dark:text-slate-400"
-        title="展开全部饮品"
+        class="group/rail relative hover:z-40 w-10 flex-1 min-h-[28px] max-h-[54px] rounded-lg border border-dashed border-slate-300 dark:border-zinc-600 flex flex-col items-center justify-center transition-all duration-150 active:scale-95 cursor-pointer bg-white/60 dark:bg-zinc-900/60 text-slate-500 dark:text-slate-400"
         @click="showMore = true"
       >
         <MoreHorizontal class="w-3 h-3" :stroke-width="2.4" />
         <span class="text-[7px] leading-none mt-0.5">更多</span>
+
+        <!-- 悬浮提示：更多饮品 -->
+        <span class="pointer-events-none absolute right-full top-1/2 z-40 mr-2 -translate-y-1/2 rounded-xl border border-black/[0.06] dark:border-white/10 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl px-2.5 py-1.5 shadow-[0_10px_28px_-8px_rgba(15,23,42,0.3)] opacity-0 transition-opacity duration-150 group-hover/rail:opacity-100">
+          <span class="block text-[10px] font-black text-slate-800 dark:text-slate-100 whitespace-nowrap">更多饮品</span>
+          <span class="block text-[9px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">查看全部饮品与补水系数</span>
+        </span>
       </button>
     </div>
 
@@ -62,7 +87,7 @@
     <div
       v-if="toast"
       :key="toast.recordId"
-      class="hydrate-toast absolute left-1/2 top-full -mt-2 z-50 overflow-hidden rounded-2xl border border-black/[0.06] dark:border-white/10 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-[0_12px_32px_-10px_rgba(15,23,42,0.35)]"
+      class="hydrate-toast absolute left-1/2 bottom-0 z-50 overflow-hidden rounded-2xl border border-black/[0.06] dark:border-white/10 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-[0_12px_32px_-10px_rgba(15,23,42,0.35)]"
     >
       <div class="flex items-center space-x-2 py-1 pl-2 pr-1.5">
         <span class="w-6 h-6 shrink-0 rounded-full bg-ios-blue/10 dark:bg-ios-blue-dark/20 text-ios-blue dark:text-ios-blue-dark flex items-center justify-center">

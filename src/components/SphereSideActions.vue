@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex items-center justify-between">
+  <div class="relative w-full h-full flex items-center justify-between">
     <!-- 左栏：快捷容量（单击即打卡）+ 自定义毫升 -->
     <div class="flex flex-col space-y-1 shrink-0 h-full max-h-[calc(100vw-190px)] self-center justify-center">
       <button
@@ -58,19 +58,30 @@
       </button>
     </div>
 
-    <!-- 撤销轻提示 -->
+    <!-- 补水成功浮条：玻璃卡片 + 3 秒倒计时撤销 -->
     <div
       v-if="toast"
-      class="fixed bottom-[86px] left-1/2 -translate-x-1/2 z-50 flex items-center space-x-2.5 pl-3.5 pr-2 py-1.5 rounded-full bg-slate-900/90 text-white shadow-xl"
+      :key="toast.recordId"
+      class="hydrate-toast absolute left-1/2 top-full -mt-2 z-50 overflow-hidden rounded-2xl border border-black/[0.06] dark:border-white/10 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-[0_12px_32px_-10px_rgba(15,23,42,0.35)]"
     >
-      <span class="text-[11px] font-semibold whitespace-nowrap">{{ toast.text }}</span>
-      <button
-        type="button"
-        class="px-2 py-0.5 rounded-full bg-white/15 hover:bg-white/25 text-[10px] font-bold cursor-pointer transition-colors"
-        @click="handleUndo"
-      >
-        撤销
-      </button>
+      <div class="flex items-center space-x-2 py-1 pl-2 pr-1.5">
+        <span class="w-6 h-6 shrink-0 rounded-full bg-ios-blue/10 dark:bg-ios-blue-dark/20 text-ios-blue dark:text-ios-blue-dark flex items-center justify-center">
+          <Droplet class="w-3.5 h-3.5" :stroke-width="2.4" />
+        </span>
+        <span class="text-[11px] font-semibold text-slate-700 dark:text-slate-200 whitespace-nowrap">
+          {{ toast.text }}
+        </span>
+        <button
+          type="button"
+          class="ml-0.5 shrink-0 whitespace-nowrap px-2.5 py-1 rounded-xl bg-ios-blue hover:bg-ios-blue/90 text-white text-[10px] font-bold shadow-sm active:scale-95 transition-all cursor-pointer"
+          @click="handleUndo"
+        >
+          撤销
+        </button>
+      </div>
+      <div class="h-0.5 bg-ios-blue/15 dark:bg-ios-blue-dark/20">
+        <div class="hydrate-toast__bar h-full bg-gradient-to-r from-ios-blue to-cyan-400"></div>
+      </div>
     </div>
 
     <!-- 全部饮品选择面板 -->

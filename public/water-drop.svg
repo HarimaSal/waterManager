@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="dropGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5AC8FA" />
+      <stop offset="100%" stop-color="#007AFF" />
+    </linearGradient>
+    <linearGradient id="highlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <!-- Background Drop -->
+  <path d="M50 10 C50 10, 18 52, 18 68 C18 85.67, 32.33 94, 50 94 C67.67 94, 82 85.67, 82 68 C82 52, 50 10, 50 10 Z" fill="url(#dropGrad)"/>
+  <!-- Light Reflection -->
+  <path d="M50 16 C50 16, 26 52, 26 66 C26 73, 29 80, 35 84 C31 79, 30 72, 32 64 C34 56, 44 32, 50 16 Z" fill="url(#highlight)"/>
+</svg>

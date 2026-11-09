@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* 核心窗口拖拽与禁止拖拽区域，确保按钮点击 100% 穿透生效 */
+.app-drag-region {
+  -webkit-app-region: drag !important;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag !important;
+  cursor: pointer !important;
+}

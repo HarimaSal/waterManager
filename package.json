@@ -4,6 +4,9 @@
   "type": "module",
   "private": true,
   "description": "iOS Style Health & Water Tracker Desktop App",
+  "author": {
+    "name": "harimasal"
+  },
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
@@ -51,7 +54,6 @@
     "asar": true,
     "win": {
       "icon": "public/app-icon.ico",
-      "signAndEditExecutable": false,
       "target": [
         "dir"
       ]

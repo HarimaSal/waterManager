@@ -33,7 +33,7 @@
 
 | 文件 | 说明 |
 | :--- | :--- |
-| [WaterManager.rar](https://gitee.com/harimasal/waterManager/releases/download/v1.0.0/WaterManager.rar) | Windows x64 绿色免安装版（v1.0.0，约 88MB），解压后双击 `VitalPulse 若水.exe` 运行 |
+| [waterManager.rar](https://gitee.com/harimasal/waterManager/releases/download/v1.0.0/waterManager.rar) | Windows x64 绿色免安装版（v1.0.0，约 88MB），解压后双击 `VitalPulse 若水.exe` 运行 |
 
 更多版本与更新说明：[Gitee 发行版页面](https://gitee.com/harimasal/waterManager/releases)
 

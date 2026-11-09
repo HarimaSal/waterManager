@@ -41,6 +41,27 @@
 
 ## ✨ 核心特色与功能矩阵
 
+## 📸 界面一览
+
+<table>
+  <tr>
+    <td align="center" width="50%"><img src="docs/screenshots/P1.png" width="320" alt="喝水主页" /><br /><sub><b>喝水主页</b>：微景观生态箱 + 水滴伴侣，球体两侧一键补水，底部常显时段节律</sub></td>
+    <td align="center" width="50%"><img src="docs/screenshots/P2.png" width="320" alt="微习惯矩阵" /><br /><sub><b>微习惯矩阵</b>：动作体态 / 营养膳食 / 身心恢复三类共 8 项打卡，可自由配置</sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><img src="docs/screenshots/P3.png" width="320" alt="心流专注" /><br /><sub><b>心流专注</b>：四套番茄预设 + 潮汐进度环，光条开关联动声景与提醒</sub></td>
+    <td align="center" width="50%"><img src="docs/screenshots/P4.png" width="320" alt="趋势统计" /><br /><sub><b>趋势统计</b>：连胜勋章 + 月/季/年三视图打卡日历，板块可折叠</sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><img src="docs/screenshots/P5.png" width="320" alt="设置中心" /><br /><sub><b>设置中心</b>：运行模式切换、按体重与活动负荷智能测算每日目标</sub></td>
+    <td align="center" width="50%"><img src="docs/screenshots/P6.png" width="320" alt="健身模式" /><br /><sub><b>健身模式</b>：训练强度叠加目标水量，围训练期五时段黄金补水节律</sub></td>
+  </tr>
+</table>
+
+> 更多界面细节与功能说明详见 [产品介绍.md](产品介绍.md)，版本变更见 [CHANGELOG.md](CHANGELOG.md)。
+
+---
+
 ### 1. ⏱️ 心流专注 · 水合律动番茄钟 (`FocusView.vue`)
 市面上的传统番茄钟仅关注时间消逝，却容易导致使用者在高度专注中忽略饮水与腰椎健康。若水番茄钟专为身心协同打造：
 - **4 大心流预设矩阵**：
